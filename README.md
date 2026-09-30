@@ -10,7 +10,7 @@ This directory contains `IgniteUI.Blazor.Templates`, a `dotnet new` template pac
 ## 1. Pack the template
 
 ```bash
-cd templates/IgniteUI.Blazor.Templates
+cd IgniteUI.Blazor.Templates
 dotnet pack -c Release -o ./bin/packed
 ```
 

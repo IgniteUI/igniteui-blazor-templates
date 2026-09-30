@@ -12,7 +12,7 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageReleaseNotes>Initial release of the IgniteUI Blazor project templates.</PackageReleaseNotes>
     <PackageProjectUrl>https://www.infragistics.com/products/ignite-ui-blazor</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/IgniteUI/igniteui-blazor</RepositoryUrl>
+    <RepositoryUrl>https://github.com/IgniteUI/igniteui-blazor-templates</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <Copyright>2026 Infragistics Inc.</Copyright>
 
