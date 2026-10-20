@@ -91,7 +91,7 @@
     private bool Selected { get; set; }
     private bool Removed { get; set; }
 
-    private void OnRemove(IgbComponentBoolValueChangedEventArgs args) => Removed = true;
+    private void OnRemove(IgbVoidEventArgs args) => Removed = true;
 
     private void Restore()
     {
