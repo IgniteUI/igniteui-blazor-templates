@@ -3,7 +3,7 @@
 # test-templates.ps1
 #
 # Smoke-tests the IgniteUI.Blazor.Templates package by:
-#   1. Installing the templates from this source folder.
+#   1. Installing the templates from this source folder (or -TemplateSource).
 #   2. Scaffolding a fresh Blazor *Server* project under ./tmp via `dotnet new igb-blazor`.
 #   3. Generating every item template (igb-*) into the project's Components/Pages folder.
 #   4. Wiring each generated page into Components/Layout/NavMenu.razor as an IgbNavDrawerItem.
@@ -14,12 +14,14 @@
 #   -ProjectName   name of the generated project          (default: IgbTemplateTest)
 #   -NavIcon       material-icons name used for nav items  (default: widgets)
 #   -SkipRestore   skip NuGet restore on create            (default: $true)
+#   -TemplateSource folder or .nupkg to install from       (default: this folder)
 
 [CmdletBinding()]
 param(
-    [string]$ProjectName = $(if ($env:PROJECT_NAME) { $env:PROJECT_NAME } else { 'IgbTemplateTest' }),
-    [string]$NavIcon     = $(if ($env:NAV_ICON)     { $env:NAV_ICON }     else { 'widgets' }),
-    [bool]  $SkipRestore = $(if ($env:SKIP_RESTORE) { $env:SKIP_RESTORE -eq '1' } else { $true })
+    [string]$ProjectName    = $(if ($env:PROJECT_NAME)    { $env:PROJECT_NAME }    else { 'IgbTemplateTest' }),
+    [string]$NavIcon        = $(if ($env:NAV_ICON)        { $env:NAV_ICON }        else { 'widgets' }),
+    [bool]  $SkipRestore    = $(if ($env:SKIP_RESTORE)    { $env:SKIP_RESTORE -eq '1' } else { $true }),
+    [string]$TemplateSource = $(if ($env:TEMPLATE_SOURCE) { $env:TEMPLATE_SOURCE } else { $PSScriptRoot })
 )
 
 $ErrorActionPreference = 'Stop'
@@ -34,8 +36,8 @@ if (Test-Path $TmpDir) {
 }
 New-Item -ItemType Directory -Path $TmpDir | Out-Null
 
-Write-Host "==> Installing templates from $ScriptDir"
-dotnet new install $ScriptDir --force
+Write-Host "==> Installing templates from $TemplateSource"
+dotnet new install $TemplateSource --force
 if ($LASTEXITCODE -ne 0) { throw "dotnet new install failed" }
 
 Write-Host "==> Creating Blazor Server project '$ProjectName'"
