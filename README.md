@@ -116,11 +116,11 @@ dotnet new igb-blazor -n MyApp --Theme fluent --IncludeWeatherSample false
 Item templates are run from inside an existing project folder; pass the file name with `-n`:
 
 ```bash
-cd MyApp/Components/Pages
+cd MyApp/MyApp/Components/Pages
 dotnet new igb-button -n ButtonsDemo
 ```
 
-This drops `ButtonsDemo.razor` into the current directory. Run `dotnet new <short-name> -h` to see a template's options.
+For `Wasm` or `Auto` hosting, use `cd MyApp/MyApp.Client/Pages` instead. This drops `ButtonsDemo.razor` into the current directory. Run `dotnet new <short-name> -h` to see a template's options.
 
 ### Register Ignite UI for Blazor
 
@@ -153,6 +153,24 @@ builder.Services.AddIgniteUIBlazor();
 ```
 
 Don't mix `IgniteUI.Blazor.Lite` with the licensed `IgniteUI.Blazor` package.
+
+Two item templates need additional packages: `igbgrid` requires `IgniteUI.Blazor.GridLite` and its theme stylesheet:
+
+```bash
+dotnet add package IgniteUI.Blazor.GridLite
+```
+
+```html
+<link href="_content/IgniteUI.Blazor.GridLite/css/themes/light/bootstrap.css" rel="stylesheet" />
+```
+
+`apexchart` requires `Blazor-ApexCharts`:
+
+```bash
+dotnet add package Blazor-ApexCharts
+```
+
+Projects created with `--IncludeWeatherSample false` omit both packages. Add the package(s) needed by any `igbgrid` or `apexchart` item templates you use.
 
 ### Supported render modes
 
@@ -197,7 +215,7 @@ Then generate and run a project:
 mkdir -p ./_smoketest && cd ./_smoketest
 dotnet new igb-blazor -n MyTestApp --Hosting Server
 cd MyTestApp
-dotnet run
+dotnet run --project MyTestApp/MyTestApp.csproj
 ```
 
 For `Wasm` / `Auto` hosting the CLI also generates `MyTestApp.sln` with a host and a `.Client` project; build the solution and run the host with `dotnet run --project MyTestApp/MyTestApp.csproj`.
