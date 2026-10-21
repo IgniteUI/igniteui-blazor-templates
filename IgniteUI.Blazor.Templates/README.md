@@ -84,7 +84,7 @@ Two equivalent scripts live next to this README and exercise the whole pack end 
 
 Each run:
 
-1. Installs the templates from this source folder (`dotnet new install . --force`).
+1. Installs the templates from this source folder (`dotnet new install . --force`), or from the folder or `.nupkg` given as the template source (see [Configuration](#configuration)).
 2. Scaffolds a fresh Blazor **Server** project under `./tmp` via `dotnet new igb-blazor`.
 3. Generates **every** item template (`igb-*`, `apexchart`) into the project's `Components/Pages` folder.
 4. Wires each generated page into `Components/Layout/NavMenu.razor` as an `IgbNavDrawerItem`, so every demo is reachable from the nav drawer.
@@ -103,13 +103,14 @@ When it finishes it prints the generated project path and the `dotnet run` comma
 
 ### Configuration
 
-Both scripts accept the same three settings. The PowerShell script exposes them as parameters (and also honors the env vars for parity); the bash script reads the env vars.
+Both scripts accept the same four settings. The PowerShell script exposes them as parameters (and also honors the env vars for parity); the bash script reads the env vars.
 
 | Setting | PowerShell parameter | Env var (both) | Default | Description |
 |---------|----------------------|----------------|---------|-------------|
 | Project name | `-ProjectName` | `PROJECT_NAME` | `IgbTemplateTest` | Name of the generated project. |
 | Nav icon | `-NavIcon` | `NAV_ICON` | `widgets` | `material-icons` name used for each generated nav item. |
 | Skip restore | `-SkipRestore` | `SKIP_RESTORE` | `true` / `1` | Skip NuGet restore when creating the project (faster). |
+| Template source | `-TemplateSource` | `TEMPLATE_SOURCE` | the script's folder | Folder or packed `.nupkg` to install the templates from. CI passes the packed nupkg so it tests what ships. |
 
 ```bash
 # bash — override via env vars

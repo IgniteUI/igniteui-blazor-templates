@@ -3,7 +3,7 @@
 # test-templates.sh
 #
 # Smoke-tests the IgniteUI.Blazor.Templates package by:
-#   1. Installing the templates from this source folder.
+#   1. Installing the templates from this source folder (or TEMPLATE_SOURCE).
 #   2. Scaffolding a fresh Blazor *Server* project under ./tmp via `dotnet new igb-blazor`.
 #   3. Generating every item template (igb-*) into the project's Components/Pages folder.
 #   4. Wiring each generated page into Components/Layout/NavMenu.razor as an IgbNavDrawerItem.
@@ -14,6 +14,7 @@
 #   PROJECT_NAME   name of the generated project        (default: IgbTemplateTest)
 #   NAV_ICON       material-icons name used for nav items (default: widgets)
 #   SKIP_RESTORE   1 to skip NuGet restore on create     (default: 1)
+#   TEMPLATE_SOURCE folder or .nupkg to install from     (default: this folder)
 
 set -euo pipefail
 
@@ -24,13 +25,14 @@ ITEMS_DIR="$SCRIPT_DIR/templates/item"
 PROJECT_NAME="${PROJECT_NAME:-IgbTemplateTest}"
 NAV_ICON="${NAV_ICON:-widgets}"
 SKIP_RESTORE="${SKIP_RESTORE:-1}"
+TEMPLATE_SOURCE="${TEMPLATE_SOURCE:-$SCRIPT_DIR}"
 
 echo "==> Cleaning $TMP_DIR"
 rm -rf "$TMP_DIR"
 mkdir -p "$TMP_DIR"
 
-echo "==> Installing templates from $SCRIPT_DIR"
-dotnet new install "$SCRIPT_DIR" --force
+echo "==> Installing templates from $TEMPLATE_SOURCE"
+dotnet new install "$TEMPLATE_SOURCE" --force
 
 echo "==> Creating Blazor Server project '$PROJECT_NAME'"
 CREATE_ARGS=(igb-blazor -n "$PROJECT_NAME" -o "$TMP_DIR/$PROJECT_NAME" --Hosting Server)
