@@ -26,9 +26,16 @@
       "isVisible": true
     },
     {
+      "id": "Empty",
+      "name": {
+        "text": "Empty project (no sample pages)"
+      },
+      "isVisible": true
+    },
+    {
       "id": "IncludeWeatherSample",
       "name": {
-        "text": "Include the Weather sample (IgbGridLite + ApexCharts)"
+        "text": "Include the Weather sample (IgbGridLite + ApexCharts; ignored for empty projects)"
       },
       "isVisible": true
     },

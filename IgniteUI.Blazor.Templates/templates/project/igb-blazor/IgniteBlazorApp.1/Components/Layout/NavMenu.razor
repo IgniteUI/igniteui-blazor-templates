@@ -17,7 +17,7 @@
     </span>
     <div slot="content">Counter</div>
 </IgbNavDrawerItem>
-@*#if (IncludeWeatherSample) *@
+@*#if (WeatherEnabled) *@
 <IgbNavDrawerItem Active="@IsActive("weather")" @onclick=@(() => Nav.NavigateTo("weather"))>
     <span slot="icon">
         <span class="material-icons icon">

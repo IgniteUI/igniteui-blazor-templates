@@ -3,7 +3,7 @@
   <PropertyGroup>
     <PackageType>Template</PackageType>
     <PackageId>IgniteUI.Blazor.Templates</PackageId>
-    <Version>0.0.1</Version>
+    <Version>0.0.5</Version>
     <Title>IgniteUI Blazor Project Templates</Title>
     <Authors>Infragistics</Authors>
     <Description>Blazor project templates built on IgniteUI.Blazor.Lite and IgniteUI.Blazor.GridLite.</Description>

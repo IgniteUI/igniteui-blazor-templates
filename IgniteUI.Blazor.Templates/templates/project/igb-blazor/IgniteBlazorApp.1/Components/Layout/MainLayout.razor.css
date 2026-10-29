@@ -1,3 +1,4 @@
+/*#if (!Empty) */
 .page {
     display: flex;
     flex-direction: column;
@@ -91,6 +92,7 @@ article.content {
     border-right: 1px solid var(--ig-gray-300, #ddd);
 }
 
+/*#endif */
 #blazor-error-ui {
     color-scheme: light only;
     background: lightyellow;
