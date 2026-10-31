@@ -10,6 +10,7 @@
     <PackageTags>dotnet-new;templates;blazor;igniteui;ignite-ui</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>IgniteUI.png</PackageIcon>
     <PackageReleaseNotes>Initial release of the IgniteUI Blazor project templates.</PackageReleaseNotes>
     <PackageProjectUrl>https://www.infragistics.com/products/ignite-ui-blazor</PackageProjectUrl>
     <RepositoryUrl>https://github.com/IgniteUI/igniteui-blazor-templates</RepositoryUrl>
@@ -27,6 +28,10 @@
 
   <ItemGroup>
     <None Include="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="IgniteUI.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>

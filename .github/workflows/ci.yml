@@ -1,0 +1,86 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+
+jobs:
+  # Blocks a pull request that would introduce a High or Critical advisory — here that means a
+  # package version pinned in a template's .csproj, which every generated project then inherits.
+  # Pushes to master skip it — the action needs the two-commit range a pull request gives it.
+  dependency-review:
+    name: Dependency Review
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+      # comment-summary-in-pr needs this. A fork PR gets a read-only token regardless, so there
+      # the comment is skipped with a warning and the finding is left to the job summary.
+      pull-requests: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Review dependency changes
+        uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5.0.0
+        with:
+          fail-on-severity: high
+          comment-summary-in-pr: on-failure
+
+  build:
+    name: Build & Validate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      # The SDK is pinned via global.json; generated projects target net10.0.
+      - name: Setup .NET
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: 10.0.x
+
+      # Folder mode formats files directly without loading MSBuild projects — the template
+      # content projects carry template-engine placeholders and are not meant to be evaluated as-is.
+      - name: Verify .NET code formatting
+        run: dotnet format whitespace . --folder --verify-no-changes
+
+      - name: Pack template package
+        run: dotnet pack IgniteUI.Blazor.Templates --configuration Release -o artifacts
+
+      # Everything below installs the packed nupkg rather than the source folder, so it tests what
+      # ships. Projects are generated inside the repository so they pick up its global.json,
+      # nuget.config and the isolating Directory.*.props, as they do for a local run of the script.
+      - name: Smoke-test item templates
+        run: |
+          TEMPLATE_SOURCE="$(ls "$GITHUB_WORKSPACE"/artifacts/*.nupkg)" bash IgniteUI.Blazor.Templates/test-templates.sh
+          dotnet build IgniteUI.Blazor.Templates/tmp/IgbTemplateTest/IgbTemplateTest/IgbTemplateTest.csproj --configuration Release
+
+      # test-templates.sh covers Server hosting with the Weather sample; this covers the other
+      # template branches. The host project references .Client where there is one, so building it
+      # builds both.
+      - name: Smoke-test project template variants
+        run: |
+          while read -r name args; do
+            dotnet new igb-blazor -n "$name" -o "tmp/smoke/$name" --SkipRestore $args
+            dotnet build "tmp/smoke/$name/$name/$name.csproj" --configuration Release
+          done <<'EOF'
+          SmokeWasm --Hosting Wasm
+          SmokeAuto --Hosting Auto
+          SmokeNoWeather --Hosting Server --IncludeWeatherSample false
+          EOF
+
+      - name: Upload template package
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: template-package
+          path: artifacts/*.nupkg
+          retention-days: 14
+          if-no-files-found: error
