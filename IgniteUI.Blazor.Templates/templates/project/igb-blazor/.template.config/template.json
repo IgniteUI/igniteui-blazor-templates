@@ -109,8 +109,19 @@
     "IncludeWeatherSample": {
       "type": "parameter",
       "datatype": "bool",
-      "description": "Include the Weather page (IgbGridLite + ApexCharts demo) and its supporting model/service.",
+      "description": "Include the Weather page (IgbGridLite + ApexCharts demo) and its supporting model/service. Ignored when Empty is set.",
       "defaultValue": "true"
+    },
+    "Empty": {
+      "type": "parameter",
+      "datatype": "bool",
+      "displayName": "Empty project",
+      "description": "Omit sample pages and layout; scaffold one empty page with Ignite UI (Lite) fully registered.",
+      "defaultValue": "false"
+    },
+    "WeatherEnabled": {
+      "type": "computed",
+      "value": "(IncludeWeatherSample && !Empty)"
     },
     "SkipRestore": {
       "type": "parameter",
@@ -172,11 +183,18 @@
           ]
         },
         {
-          "condition": "(!IncludeWeatherSample)",
+          "condition": "(!WeatherEnabled)",
           "exclude": [
             "IgniteBlazorApp.1/Components/Pages/Weather.razor",
             "IgniteBlazorApp.1/Models/WeatherForecast.cs",
             "IgniteBlazorApp.1/Services/WeatherForecastService.cs"
+          ]
+        },
+        {
+          "condition": "(Empty)",
+          "exclude": [
+            "IgniteBlazorApp.1/Components/Pages/Counter.razor",
+            "IgniteBlazorApp.1/Components/Layout/NavMenu.razor"
           ]
         }
       ]
