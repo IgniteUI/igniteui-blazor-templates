@@ -24,7 +24,8 @@ dotnet new igb-blazor -n MyApp
 | `--Hosting` | Interactivity hosting model | `Server`, `Wasm`, `Auto` | `Server` |
 | `--Theme` | IgniteUI design theme | `bootstrap`, `material`, `fluent`, `indigo` | `bootstrap` |
 | `--Variant` | Light or dark color variant | `light`, `dark` | `light` |
-| `--IncludeWeatherSample` | Include the Weather page (IgbGridLite + chart demo) | `true`, `false` | `true` |
+| `--IncludeWeatherSample` | Include the Weather page (IgbGridLite + chart demo). Ignored with `--Empty` | `true`, `false` | `true` |
+| `--Empty` | Omit sample pages and layout; scaffold one empty page with Ignite UI (Lite) registered and themed | `true`, `false` | `false` |
 | `--SkipRestore` | Skip automatic NuGet restore on create | `true`, `false` | `false` |
 
 ### Examples
@@ -39,6 +40,12 @@ Create a server-rendered project with the Fluent theme, without the Weather samp
 
 ```bash
 dotnet new igb-blazor -n MyApp --Theme fluent --IncludeWeatherSample false
+```
+
+Create an empty project — a single blank page with Ignite UI already registered and themed:
+
+```bash
+dotnet new igb-blazor -n MyApp --Empty
 ```
 
 ## Component item templates

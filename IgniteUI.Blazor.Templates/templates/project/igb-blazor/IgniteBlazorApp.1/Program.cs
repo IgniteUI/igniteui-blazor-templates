@@ -1,8 +1,8 @@
-#if (IncludeWeatherSample)
+#if (WeatherEnabled)
 using ApexCharts;
 #endif
 using IgniteBlazorApp._1.Components;
-#if (IncludeWeatherSample)
+#if (WeatherEnabled)
 using IgniteBlazorApp._1IGB_NS_SEGMENT.Services;
 #endif
 using IgniteUI.Blazor.Controls;
@@ -21,7 +21,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
 #endif
 builder.Services.AddIgniteUIBlazor();
-#if (IncludeWeatherSample)
+#if (WeatherEnabled)
 builder.Services.AddApexCharts();
 builder.Services.AddSingleton<WeatherForecastService>();
 #endif

@@ -26,7 +26,8 @@ It was split out of [igniteui-blazor](https://github.com/IgniteUI/igniteui-blazo
 | `--Hosting` (`-H`) | Interactivity hosting model | `Server`, `Wasm`, `Auto` | `Server` |
 | `--Theme` (`-T`) | Ignite UI design theme | `bootstrap`, `material`, `fluent`, `indigo` | `bootstrap` |
 | `--Variant` (`-V`) | Light or dark color variant | `light`, `dark` | `light` |
-| `--IncludeWeatherSample` | Include the Weather page (Grid Lite + chart demo) | `true`, `false` | `true` |
+| `--IncludeWeatherSample` | Include the Weather page (Grid Lite + chart demo). Ignored with `--Empty` | `true`, `false` | `true` |
+| `--Empty` (`-E`) | Omit sample pages and the navbar / nav drawer layout; scaffold a single empty page with Ignite UI (Lite) registered and themed | `true`, `false` | `false` |
 | `--SkipRestore` | Skip automatic NuGet restore on create | `true`, `false` | `false` |
 
 Template strings are localized for `en`, `ja` and `ko`.
@@ -111,6 +112,14 @@ Server hosting with the Fluent theme, without the Weather sample page:
 dotnet new igb-blazor -n MyApp --Theme fluent --IncludeWeatherSample false
 ```
 
+Empty project (one blank page, Ignite UI already registered and themed):
+
+```bash
+dotnet new igb-blazor -n MyApp --Empty
+```
+
+In Visual Studio, check **Empty project (no sample pages)** in the **Additional information** step.
+
 ### Add a component page
 
 Item templates are run from inside an existing project folder; pass the file name with `-n`:
@@ -170,7 +179,7 @@ dotnet add package IgniteUI.Blazor.GridLite
 dotnet add package Blazor-ApexCharts
 ```
 
-Projects created with `--IncludeWeatherSample false` omit both packages. Add the package(s) needed by any `igbgrid` or `apexchart` item templates you use.
+Projects created with `--IncludeWeatherSample false` or `--Empty` omit both packages. Add the package(s) needed by any `igbgrid` or `apexchart` item templates you use.
 
 ### Supported render modes
 

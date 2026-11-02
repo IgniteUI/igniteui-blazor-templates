@@ -1,5 +1,14 @@
 @inherits LayoutComponentBase
 
+@*#if (Empty) *@
+@Body
+
+<div id="blazor-error-ui" data-nosnippet>
+    An unhandled error has occurred.
+    <a href="." class="reload">Reload</a>
+    <span class="dismiss">🗙</span>
+</div>
+@*#else *@
 <div class="page">
     <IgbNavbar>
         <IgbIconButton Variant="IconButtonVariant.Flat" slot="start" @onclick=@(e => _navDrawer!.ToggleAsync())>
@@ -31,3 +40,4 @@
 @code {
     private IgbNavDrawer? _navDrawer;
 }
+@*#endif *@

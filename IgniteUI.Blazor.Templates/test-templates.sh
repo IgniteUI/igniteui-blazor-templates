@@ -31,6 +31,13 @@ echo "==> Cleaning $TMP_DIR"
 rm -rf "$TMP_DIR"
 mkdir -p "$TMP_DIR"
 
+# Reinstalling a .nupkg with --force adds a duplicate registration instead of replacing it,
+# which breaks `dotnet new igb-blazor`. This removes every installed version of the package.
+if [[ "$TEMPLATE_SOURCE" == *.nupkg ]]; then
+    echo "==> Uninstalling existing IgniteUI.Blazor.Templates"
+    dotnet new uninstall IgniteUI.Blazor.Templates >/dev/null 2>&1 || true
+fi
+
 echo "==> Installing templates from $TEMPLATE_SOURCE"
 dotnet new install "$TEMPLATE_SOURCE" --force
 
