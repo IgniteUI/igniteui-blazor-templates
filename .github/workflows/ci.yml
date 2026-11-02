@@ -53,7 +53,7 @@ jobs:
         run: dotnet format whitespace . --folder --verify-no-changes
 
       - name: Pack template package
-        run: dotnet pack IgniteUI.Blazor.Templates --configuration Release -o artifacts
+        run: dotnet pack IgniteUI.Blazor.Templates --configuration Release -o artifacts -warnaserror
 
       # Everything below installs the packed nupkg rather than the source folder, so it tests what
       # ships. Projects are generated inside the repository so they pick up its global.json,
@@ -61,7 +61,7 @@ jobs:
       - name: Smoke-test item templates
         run: |
           TEMPLATE_SOURCE="$(ls "$GITHUB_WORKSPACE"/artifacts/*.nupkg)" bash IgniteUI.Blazor.Templates/test-templates.sh
-          dotnet build IgniteUI.Blazor.Templates/tmp/IgbTemplateTest/IgbTemplateTest/IgbTemplateTest.csproj --configuration Release
+          dotnet build IgniteUI.Blazor.Templates/tmp/IgbTemplateTest/IgbTemplateTest/IgbTemplateTest.csproj --configuration Release -warnaserror
 
       # test-templates.sh covers Server hosting with the Weather sample; this covers the other
       # template branches. The host project references .Client where there is one, so building it
@@ -70,7 +70,7 @@ jobs:
         run: |
           while read -r name args; do
             dotnet new igb-blazor -n "$name" -o "tmp/smoke/$name" --SkipRestore $args
-            dotnet build "tmp/smoke/$name/$name/$name.csproj" --configuration Release
+            dotnet build "tmp/smoke/$name/$name/$name.csproj" --configuration Release -warnaserror
           done <<'EOF'
           SmokeWasm --Hosting Wasm
           SmokeAuto --Hosting Auto

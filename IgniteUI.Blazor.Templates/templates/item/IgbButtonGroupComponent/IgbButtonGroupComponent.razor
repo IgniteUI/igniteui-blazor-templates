@@ -76,12 +76,22 @@
 
     private void OnSelect(IgbComponentValueChangedEventArgs args)
     {
+        if (args.Detail is not string value)
+        {
+            return;
+        }
         if (Selection != ButtonGroupSelection.Multiple)
         {
             Selected.Clear();
         }
-        Selected.Add(args.Detail);
+        Selected.Add(value);
     }
 
-    private void OnDeselect(IgbComponentValueChangedEventArgs args) => Selected.Remove(args.Detail);
+    private void OnDeselect(IgbComponentValueChangedEventArgs args)
+    {
+        if (args.Detail is string value)
+        {
+            Selected.Remove(value);
+        }
+    }
 }

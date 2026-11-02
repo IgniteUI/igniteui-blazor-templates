@@ -36,6 +36,14 @@ if (Test-Path $TmpDir) {
 }
 New-Item -ItemType Directory -Path $TmpDir | Out-Null
 
+# Reinstalling a .nupkg with --force adds a duplicate registration instead of replacing it,
+# which breaks `dotnet new igb-blazor`. This removes every installed version of the package.
+if ($TemplateSource -like '*.nupkg') {
+    Write-Host "==> Uninstalling existing IgniteUI.Blazor.Templates"
+    dotnet new uninstall IgniteUI.Blazor.Templates *> $null
+    $global:LASTEXITCODE = 0
+}
+
 Write-Host "==> Installing templates from $TemplateSource"
 dotnet new install $TemplateSource --force
 if ($LASTEXITCODE -ne 0) { throw "dotnet new install failed" }
